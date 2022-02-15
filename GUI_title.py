@@ -395,5 +395,24 @@ for child in tab2.winfo_children():
         , pady=2
     )
 
+############################################### Tab3 #######################################################
+tab3=ttk.Frame(tabControl)
+tabControl.add(tab3, text='Tab 3')
+
+tab3_frame=tk.Frame(tab3, bg='blue')
+tab3_frame.pack()
+for orange_color in range(2):
+    canvas = tk.Canvas(
+        tab3_frame
+        ,width=150
+        ,height=80
+        ,highlightthickness=0
+        ,bg='orange'
+    )
+    canvas.grid(
+        row=orange_color
+        ,column=orange_color
+    )
+
 name_entered.focus()
 win.mainloop()
