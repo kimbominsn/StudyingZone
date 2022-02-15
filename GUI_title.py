@@ -2,7 +2,7 @@ from textwrap import wrap
 import tkinter as tk
 from tkinter import W, Spinbox, ttk, scrolledtext, Menu
 from tkinter import messagebox as msg
-
+from time import sleep
 class ToolTip(object):
     def __init__(self, widget, tip_text=None):
         self.widget=widget
@@ -293,36 +293,106 @@ for n in range(3):
         ,row=1
     )
 
-in_frame=ttk.LabelFrame(
-    tab2_frame
-    , text='labels in a Frame'
+
+#####progress bar#########
+progress_bar=ttk.Progressbar(
+    tab2
+    , orient='horizontal'
+    , length=286
+    , mode='determinate'
 )
-in_frame.grid(
+
+progress_bar.grid(
+    column=0
+    , row=3
+    , pady=2
+)
+
+def run_progressbar():
+    progress_bar['maximum']=100
+    for i in range(101):
+        sleep(0.05)
+        progress_bar['value']=i
+        progress_bar.update()
+    progress_bar['value']=0
+
+def start_progressbar():
+    progress_bar.start()
+
+def stop_progressbar():
+    progress_bar.stop()
+
+def progressbar_stop_after(wait_ms=1000):
+    win.after(wait_ms, progress_bar.stop)
+
+btn_frame=ttk.LabelFrame(
+    tab2_frame
+    , text='ProgressBar '
+)
+btn_frame.grid(
     column=0
     , row=2
-    , columnspan=3
+    , columnspan=2
+    , sticky=tk.W
 )
 
-# ttk.Label(
-#     in_frame
-#     , text="1"
-# ).grid(column=0,row=0)
+ttk.Button(
+    btn_frame
+    , text=" Run ProgressBar "
+    , command=run_progressbar
+).grid(
+    column=0
+    , row=0
+)
 
-num_label=3
-for n in range(num_label):
-    ttk.Label(
-        in_frame
-        , text=f"label{n}"
-    ).grid(
-        column=n
-        ,row=0
-        ,sticky=tk.W
+ttk.Button(
+    btn_frame
+    , text=" Start ProgressBar "
+    , command=start_progressbar
+).grid(
+    column=0
+    , row=1
+)
+
+ttk.Button(
+    btn_frame
+    , text=" Stop ProgressBar "
+    , command=stop_progressbar
+).grid(
+    column=0
+    , row=2
+)
+
+ttk.Button(
+    btn_frame
+    , text=" Stop after second"
+    , command=progressbar_stop_after
+).grid(
+    column=0
+    , row=3
+)
+# num_label=3
+# for n in range(num_label):
+#     ttk.Label(
+#         btn_frame
+#         , text=f"label{n}"
+#     ).grid(
+#         column=n
+#         ,row=0
+#         ,sticky=tk.W
+#     )
+
+for child in btn_frame.winfo_children():
+    child.grid_configure(
+        padx=2
+        ,pady=2
+        , sticky=tk.W
     )
 
-for child in in_frame.winfo_children():
+for child in tab2.winfo_children():
     child.grid_configure(
         padx=8
-        ,pady=4
+        , pady=2
     )
 
 name_entered.focus()
