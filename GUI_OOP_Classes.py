@@ -1,64 +1,40 @@
-from textwrap import wrap
+# from textwrap import wrap
 import tkinter as tk
 from tkinter import W, Spinbox, ttk, scrolledtext, Menu
 from tkinter import messagebox as msg
 from time import sleep
+from ToolTip import ToolTip
+from threading import Thread    #import thread module
+from queue import Queue
+import Queues as bq
 
 GLOBAL_CONST=42
-class ToolTip(object):
-    def __init__(self, widget, tip_text=None):
-        self.widget=widget
-        self.tip_text=tip_text
-        widget.bind('<Enter>', self.mouse_enter)
-        widget.bind('<Leave>', self.mouse_leave)
-
-    def mouse_enter(self, _event):
-        self.show_tooltip()
-
-    def mouse_leave(self, _event):
-        self.hide_tooltip()
-
-    def show_tooltip(self):
-        if self.tip_text:
-            x_left=self.widget.winfo_rootx()
-            y_top=self.widget.winfo_rooty() -18
-            self.tip_window=tk.Toplevel(self.widget)
-            self.tip_window.overrideredirect(True)
-            self.tip_window.geometry("+%d+%d" % (x_left,y_top))
-            label=tk.Label(
-                self.tip_window
-                , text=self.tip_text
-                , justify=tk.LEFT
-                , background="#FFFFe0"
-                , relief=tk.SOLID
-                , borderwidth=1
-                , font=("tahoma", "8", "normal")
-            )
-            label.pack(ipadx=1)
-
-    def hide_tooltip(self):
-        if self.tip_text:
-            self.tip_window.destroy()
-
 
 class OOP():
 
     def __init__(self):
         self.win=tk.Tk()
-        ToolTip(
-            self.win
-            , 'Hello GUI'
-        )
+        ToolTip(self.win, 'Hello GUI')
 
         self.win.title("Python GUI")
         self.win.iconbitmap('zzang.ico') #상대경로
+        self.gui_queue=Queue()
         self.create_widgets()
+        
+    ############################################### Callback #######################################################
 
     def clicked(self):
 
         self.btn_click.configure(
             text='Hello!'+self.name.get()+self.number.get()
         )
+        # self.create_thread()
+        bq.write_to_scrol(self)
+        # self.use_queues()
+
+        # for idx in range(10):
+        #     sleep(5)
+        #     self.scrBox.insert(tk.INSERT, str(idx) +'\n')
 
     def _spin(self):
         value=self.spin.get()
@@ -104,8 +80,39 @@ class OOP():
         self.win.destroy()
         exit()
 
+    def method_in_a_thread(self, num_of_loops=10):
+        # print('Hi, how are you?\n')
+        for idx in range(num_of_loops):
+            sleep(1)
+            self.scrBox.insert(tk.INSERT, f'{self.run_thread.name}'+str(idx)+'\n')
+        sleep(1)
+        # print('method_in_a_thread():', self.run_thread.is_alive())
    
+    def create_thread(self, num=1):
+        self.run_thread=Thread(
+            target=self.method_in_a_thread
+            , args=[num]
+            , daemon=True
+        )
+        # self.run_thread.setDaemon(True) #runtime error 방지
+        self.run_thread.start()
+        # print(self.run_thread)
+        
+        write_thread=Thread(
+            target=self.use_queues
+            , args=[num]
+            , daemon=True)
+       
+        write_thread.start()
 
+
+    def use_queues(self, loops=5):
+        
+        while True:
+            print(self.gui_queue.get())
+
+
+    #---------------------- painting GUI main widgets -------------------------#
     def create_widgets(self):
 
         ############################################### Menu #######################################################
@@ -151,7 +158,7 @@ class OOP():
         self.a_label.grid(
             column=0
             , row=0
-            , sticky='W'
+            # , sticky='W'
         )
 
         ttk.Label(self.tab1_frame, text='Choose a number:').grid(
@@ -166,18 +173,19 @@ class OOP():
         self.name_entered=ttk.Entry(
             self.tab1_frame
             , text=self.name
-            , width=12
+            , width=24
         )
         self.name_entered.grid(
             column=0
             , row=1
         )
+        ToolTip(self.name_entered, 'This is a Entry control')
 
         self.number=tk.StringVar()
         self.number_chosen=ttk.Combobox(
             self.tab1_frame
             , textvariable=self.number
-            , width=12
+            , width=14
             , state='readonly'
         )
         self.number_chosen['values']=(1,10,11,15,30,50)
@@ -186,6 +194,8 @@ class OOP():
             ,row=1
         )
         self.number_chosen.current(0)
+
+        ToolTip(self.number_chosen, 'This is a Combobox control')
 
         self.btn_click=ttk.Button(
             self.tab1_frame
@@ -198,15 +208,15 @@ class OOP():
             ,row=1
         )
 
-
+        ToolTip(self.btn_click, 'This is a button control')
 
         self.spin=Spinbox(
             self.tab1_frame
             # , from_=0
             # , to=10
-            , values=(1,11,12,23,34,55,100)
+            , values=(1,2,4,42,100)
             ,width=5
-            , bd=8
+            , bd=9
             , command= self._spin
         )
 
@@ -217,29 +227,18 @@ class OOP():
 
 
         ToolTip(self.spin, 'This is a Spin control')
-        # def _spin2():
-        #     value=spin2.get()
-        #     print(value)
-        #     scrBox.insert(tk.INSERT, value+'\n')
 
-        # spin2=Spinbox(
-        #     tab1_frame
-        #     # , from_=0
-        #     # , to=10
-        #     , values=(1,11,12,23,34,55,100)
-        #     ,width=5
-        #     , bd=9
-        #     , command= _spin2
-        #     , relief=tk.RIDGE
-        # )
-        # spin2.grid(
-        #     column=1
-        #     ,row=2
-        # )
+
+        for child in self.tab1_frame.winfo_children():
+            child.grid_configure(
+                padx=8
+                , pady=2
+                , sticky=tk.W
+            )
 
         #scrolled box
-        scr_w=30
-        scr_h=3
+        scr_w=40
+        scr_h=10
 
         self.scrBox=scrolledtext.ScrolledText(
             self.tab1_frame
@@ -248,11 +247,7 @@ class OOP():
             , wrap=tk.WORD
         )
 
-        for child in self.tab1_frame.winfo_children():
-            child.grid_configure(
-                padx=8
-                , pady=2
-            )
+
         
         self.scrBox.grid(
             column=0
@@ -390,16 +385,7 @@ class OOP():
             column=0
             , row=3
         )
-        # num_label=3
-        # for n in range(num_label):
-        #     ttk.Label(
-        #         btn_frame
-        #         , text=f"label{n}"
-        #     ).grid(
-        #         column=n
-        #         ,row=0
-        #         ,sticky=tk.W
-        #     )
+
 
         for child in self.btn_frame.winfo_children():
             child.grid_configure(
@@ -433,14 +419,18 @@ class OOP():
                 ,column=orange_color
             )
 
-
-        # strData=spin.get()
-        # print("AAA Spinbox value:"+strData)
-
         self.using_global()
         print('Global const : ', GLOBAL_CONST)
 
         self.name_entered.focus()
 
+
+#=============================================
+#   Start GUI
+#=============================================
+
 oop=OOP()
+
+# run_thread=Thread(target=oop.method_in_a_thread)
+
 oop.win.mainloop()
