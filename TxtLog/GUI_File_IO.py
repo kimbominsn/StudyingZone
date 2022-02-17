@@ -12,15 +12,14 @@ class IO_MAIN():
         self.win=tk.Tk()
         self.win.title("File write test")
         self.create_widgets()
-        self.src_queue=Queue()
+        self.src_queue=Queue()                  #queue for gui log
         self.logFile=Logging(self.src_queue)
-        self.log_stop=threading.Event()
+        self.log_stop=threading.Event()         #thread stop flag
         
     
     def use_queues(self, log_stop):
         
         while True:
-            # print(self.src_queue.get())
             self.scrBox.insert(
                 tk.INSERT
                 ,self.src_queue.get()
@@ -30,6 +29,7 @@ class IO_MAIN():
 
     #------------------------ Create threads for logging ---------------------------------
     def action_start_logging(self):
+        self.log_stop.clear()   #initiate thread event flag
         # Thead for log messages on scrolled box
         src_log=Thread(
             target=self.use_queues
@@ -39,7 +39,6 @@ class IO_MAIN():
         src_log.start()
         
         # Thread for log files
-        self.log_stop.clear()   #initiate thread event flag
         log=Thread(
             target=self.logFile.start_logging
             , daemon=True
@@ -52,7 +51,7 @@ class IO_MAIN():
     def action_stop_logging(self):
         self.log_stop.set()
     
-
+    #------------------------ Widget Layout ---------------------------------
     def create_widgets(self):
 
         #------------------------ Tab control ---------------------------------
