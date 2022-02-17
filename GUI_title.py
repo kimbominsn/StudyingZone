@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import W, Spinbox, ttk, scrolledtext, Menu
 from tkinter import messagebox as msg
 from time import sleep
+
+GLOBAL_CONST=42
 class ToolTip(object):
     def __init__(self, widget, tip_text=None):
         self.widget=widget
@@ -37,9 +39,6 @@ class ToolTip(object):
     def hide_tooltip(self):
         if self.tip_text:
             self.tip_window.destroy()
-
-
-
 
 
 win=tk.Tk()
@@ -173,6 +172,7 @@ spin.grid(
     column=0
     , row=2
 )
+
 
 ToolTip(spin, 'This is a Spin control')
 # def _spin2():
@@ -413,6 +413,20 @@ for orange_color in range(2):
         row=orange_color
         ,column=orange_color
     )
+
+
+# strData=spin.get()
+# print("AAA Spinbox value:"+strData)
+
+def using_global():
+    global GLOBAL_CONST
+    print(GLOBAL_CONST)
+    GLOBAL_CONST=777
+    print(GLOBAL_CONST)
+
+
+using_global()
+print('Global const : ', GLOBAL_CONST)
 
 name_entered.focus()
 win.mainloop()
