@@ -2,13 +2,19 @@
 import tkinter as tk
 from tkinter import W, Spinbox, ttk, scrolledtext, Menu
 from tkinter import messagebox as msg
+from tkinter import filedialog as fd
 from time import sleep
 from ToolTip import ToolTip
 from threading import Thread    #import thread module
 from queue import Queue
 import Queues as bq
+from os import makedirs, path
 
 GLOBAL_CONST=42
+fDir=path.dirname(__file__)
+netDir=fDir+'Backup'
+if not path.exists(netDir):
+    makedirs(netDir, exist_ok=True)
 
 class OOP():
 
@@ -20,6 +26,7 @@ class OOP():
         self.win.iconbitmap('zzang.ico') #상대경로
         self.gui_queue=Queue()
         self.create_widgets()
+        self.defaultFileEntries()
         
     ############################################### Callback #######################################################
 
@@ -111,6 +118,44 @@ class OOP():
         while True:
             print(self.gui_queue.get())
 
+    #file browse 버튼 콜백
+    def getFileName(self):
+        print('hello from getFileName')
+        fDir=path.dirname(__file__)
+        fName=fd.askopenfilename(parent=self.win, initialdir=fDir)
+
+
+    def copyFile(self):
+        import shutil
+        src=self.fileEntry.get()
+        file=src.split('/')[-1]
+        dst=self.netwEntry.get() + '' + file
+        try:
+            shutil.copy(src, dst)
+            msg.showinfo('Copy File to Network', 'Success: File copied.')
+        except FileNotFoundError as err:
+            msg.showerror('Copy File to Network', '*** Failed to copy file! ***\n'+str(err))
+        except Exception as ex:
+            msg.showerror('Copy File to Network', '*** Failed to copy file! ***\n'+str(ex))
+
+    def defaultFileEntries(self):
+        self.fileEntry.delete(0, tk.END)
+        self.fileEntry.insert(0, fDir)
+        if len(fDir) > self.entryLen:
+            self.fileEntry.config(
+                # width=len(fDir)+3
+                width=35
+                , status='readonly'
+            )
+        
+        self.netwEntry.delete(0, tk.END)
+        self.netwEntry.insert(0,netDir)
+
+        if(len(netDir))>self.entryLen:
+            self.netwEntry.config(
+                # width=len(netDir)+3
+                width=35
+                )
 
     #---------------------- painting GUI main widgets -------------------------#
     def create_widgets(self):
@@ -179,7 +224,8 @@ class OOP():
             column=0
             , row=1
         )
-        ToolTip(self.name_entered, 'This is a Entry control')
+        self.name_entered.delete(0, tk.END)
+        self.name_entered.insert(0, '< default name >')
 
         self.number=tk.StringVar()
         self.number_chosen=ttk.Combobox(
@@ -195,7 +241,6 @@ class OOP():
         )
         self.number_chosen.current(0)
 
-        ToolTip(self.number_chosen, 'This is a Combobox control')
 
         self.btn_click=ttk.Button(
             self.tab1_frame
@@ -207,8 +252,6 @@ class OOP():
             column=2
             ,row=1
         )
-
-        ToolTip(self.btn_click, 'This is a button control')
 
         self.spin=Spinbox(
             self.tab1_frame
@@ -224,9 +267,6 @@ class OOP():
             column=0
             , row=2
         )
-
-
-        ToolTip(self.spin, 'This is a Spin control')
 
 
         for child in self.tab1_frame.winfo_children():
@@ -255,8 +295,6 @@ class OOP():
             ,columnspan=3
             ,sticky=tk.EW
         )
-
-        ToolTip(self.scrBox, 'This is a ScrolledText widget')
 
         ############################################### Tab2 #######################################################
         self.tab2=ttk.Frame(tabControl)
@@ -324,6 +362,72 @@ class OOP():
                 ,row=1
             )
 
+        #-------------File Browse--------------
+        self.mngFilesFrame=ttk.LabelFrame(
+            self.tab2
+            , text=' Manage Files: '
+        )
+
+        self.mngFilesFrame.grid(
+            column=0
+            , row=1
+            , sticky=tk.EW
+            , padx=10
+            , pady=5
+        )
+
+        self.lb=ttk.Button(
+            self.mngFilesFrame
+            , text="Browse to File ..."
+            , command= self.getFileName
+        )
+        self.lb.grid(
+            column=0
+            , row=0
+            , sticky=tk.W
+        )
+
+        file=tk.StringVar()
+        self.entryLen=scr_w
+        self.fileEntry=ttk.Entry(
+            self.mngFilesFrame
+            , width=self.entryLen
+            , textvariable=file    
+        )
+
+        self.fileEntry.grid(
+            column=1
+            , row=0
+            , sticky=tk.W
+        )
+
+        logDir=tk.StringVar()
+        self.netwEntry=ttk.Entry(
+            self.mngFilesFrame
+            , width=self.entryLen
+            , textvariable=logDir
+        )
+
+        self.netwEntry.grid(
+            column=1
+            , row=1
+            , sticky=tk.W
+        )
+
+        self.cb=ttk.Button(
+            self.mngFilesFrame
+            , text="Copy File to : "
+            , command=self.copyFile
+        )
+
+        self.cb.grid(
+            column=0
+            , row=1
+            , sticky= tk.E
+        )
+
+        for child in self.mngFilesFrame.winfo_children():
+            child.grid_configure( padx=6, pady=6)
 
         #-------------progress bar--------------
         self.progress_bar=ttk.Progressbar(
@@ -335,7 +439,7 @@ class OOP():
 
         self.progress_bar.grid(
             column=0
-            , row=3
+            , row=2
             , pady=2
         )
 
@@ -394,6 +498,8 @@ class OOP():
                 , sticky=tk.W
             )
 
+
+
         for child in self.tab2_frame.winfo_children():
             child.grid_configure(
                 padx=8
@@ -422,7 +528,20 @@ class OOP():
         self.using_global()
         print('Global const : ', GLOBAL_CONST)
 
-        self.name_entered.focus()
+        # self.name_entered.focus()
+        tabControl.select(1)
+
+        ############################################### tooltips #######################################################
+        ToolTip(self.name_entered, 'This is a Entry control')
+
+        ToolTip(self.number_chosen, 'This is a Combobox control')
+
+        ToolTip(self.btn_click, 'This is a button control')
+
+        ToolTip(self.spin, 'This is a Spin control')
+
+        ToolTip(self.scrBox, 'This is a ScrolledText widget')
+
 
 
 #=============================================
