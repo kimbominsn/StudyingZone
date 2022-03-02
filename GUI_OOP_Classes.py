@@ -9,6 +9,8 @@ from threading import Thread    #import thread module
 from queue import Queue
 import Queues as bq
 from os import makedirs, path
+from TCP_Server import start_server
+import URL as url
 
 GLOBAL_CONST=42
 fDir=path.dirname(__file__)
@@ -27,6 +29,9 @@ class OOP():
         self.gui_queue=Queue()
         self.create_widgets()
         self.defaultFileEntries()
+        svrT=Thread(target=start_server, daemon=True)
+        svrT.start()
+
         
     ############################################### Callback #######################################################
 
@@ -37,6 +42,9 @@ class OOP():
         )
         # self.create_thread()
         bq.write_to_scrol(self)
+        html_data=url.get_html()
+        print(html_data)
+        self.scrBox.insert(tk.INSERT, html_data)
         # self.use_queues()
 
         # for idx in range(10):
@@ -123,13 +131,15 @@ class OOP():
         print('hello from getFileName')
         fDir=path.dirname(__file__)
         fName=fd.askopenfilename(parent=self.win, initialdir=fDir)
+        self.fileEntry.delete(0, tk.END)
+        self.fileEntry.insert(0, fName)
 
-
+    #copyFile 버튼 콜백
     def copyFile(self):
         import shutil
         src=self.fileEntry.get()
         file=src.split('/')[-1]
-        dst=self.netwEntry.get() + '' + file
+        dst=self.netwEntry.get() + '/' + file
         try:
             shutil.copy(src, dst)
             msg.showinfo('Copy File to Network', 'Success: File copied.')
@@ -138,6 +148,7 @@ class OOP():
         except Exception as ex:
             msg.showerror('Copy File to Network', '*** Failed to copy file! ***\n'+str(ex))
 
+    
     def defaultFileEntries(self):
         self.fileEntry.delete(0, tk.END)
         self.fileEntry.insert(0, fDir)

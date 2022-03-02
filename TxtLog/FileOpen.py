@@ -4,19 +4,12 @@ import os
 from time import sleep
 from tkinter import StringVar
 from docx import Document
- #pip install python-docx
-# import win32com.client as win32
-#  #pip install pypiwin32
-# import olefile
+
 import pandas as pd
 from hwpCtrl import HWP
 # import win32com.client as win32
 import PyPDF2
 
-# from pdfminer.pdfinterp import PDFResourceManager, process_pdf
-# from pdfminer.converter import TextConverter
-# from pdfminer.layout import LAParams
-# from io import StringIO
 
 
 class Logging():
@@ -76,8 +69,8 @@ class Logging():
     
     def log_read(self, fName):
 
-        str=StringVar()
-        str.get()
+        # str=StringVar()
+        # str.get()
         fileToRead=f"{self.dst_dir}/{fName}"
         fTypeToRead=fileToRead.split('.')[1]
 
