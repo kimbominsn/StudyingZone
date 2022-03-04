@@ -3,7 +3,7 @@ import os
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QFileDialog as fd
 from PyQt5.QtGui import QStandardItemModel, QStandardItem   #QListView에 추가할 model용 library
-from GUI_PyQt5_logging import Ui_MainWindow
+from GUI_PyQt5_logging_1 import Ui_MainWindow
 from FileOpen import Logging    #FileOpen.py
 from queue import Queue
 

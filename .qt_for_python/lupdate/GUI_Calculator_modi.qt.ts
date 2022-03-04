@@ -8,92 +8,92 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="51"/>
+        <location filename="GUI_Calculator_modi.ui" line="62"/>
         <source>7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="64"/>
+        <location filename="GUI_Calculator_modi.ui" line="83"/>
         <source>8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="77"/>
+        <location filename="GUI_Calculator_modi.ui" line="101"/>
         <source>9</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="102"/>
+        <location filename="GUI_Calculator_modi.ui" line="131"/>
         <source>4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="115"/>
+        <location filename="GUI_Calculator_modi.ui" line="149"/>
         <source>5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="128"/>
+        <location filename="GUI_Calculator_modi.ui" line="167"/>
         <source>6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="153"/>
+        <location filename="GUI_Calculator_modi.ui" line="197"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="166"/>
+        <location filename="GUI_Calculator_modi.ui" line="215"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="179"/>
+        <location filename="GUI_Calculator_modi.ui" line="233"/>
         <source>3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="204"/>
+        <location filename="GUI_Calculator_modi.ui" line="263"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="217"/>
+        <location filename="GUI_Calculator_modi.ui" line="281"/>
         <source>*</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="230"/>
+        <location filename="GUI_Calculator_modi.ui" line="299"/>
         <source>-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="243"/>
+        <location filename="GUI_Calculator_modi.ui" line="317"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="259"/>
+        <location filename="GUI_Calculator_modi.ui" line="337"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="272"/>
+        <location filename="GUI_Calculator_modi.ui" line="354"/>
         <source>&lt;-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="305"/>
+        <location filename="GUI_Calculator_modi.ui" line="396"/>
         <source>.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="318"/>
+        <location filename="GUI_Calculator_modi.ui" line="414"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="GUI_Calculator_modi.ui" line="331"/>
+        <location filename="GUI_Calculator_modi.ui" line="432"/>
         <source>=</source>
         <translation type="unfinished"></translation>
     </message>
