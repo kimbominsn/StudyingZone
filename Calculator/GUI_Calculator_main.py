@@ -1,3 +1,4 @@
+from tokenize import Floatnumber
 from GUI_Calculator_additional import Ui_MainWindow
 from PyQt5 import QtWidgets
 import sys
@@ -63,7 +64,7 @@ class CaculatorMain():
         self.num=''
         self.ui_text=''
         self.list_calc=list()
-        #{'val':'', 'type':type.num/oper/none, 'prev_type':self.previous_set}
+        #{'val':'', 'type':'num/oper', 'prev_type':self.previous_set}
         self.math=list()
         self.numList=list()
         self.done=False     #
